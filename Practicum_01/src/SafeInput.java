@@ -223,7 +223,7 @@ public class SafeInput
             }
             else
             {
-                System.out.println("You must answere [Y/N]! " + response );
+                System.out.println("You must answer [Y/N]! " + response );
             }
             
         }while(!gotAVal);
