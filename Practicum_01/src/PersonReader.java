@@ -20,10 +20,10 @@ public class PersonReader
         String rec = "";
         ArrayList<String> lines = new ArrayList<>();
 
-        final int FIELDS_LENGTH = 4;
+        final int FIELDS_LENGTH = 5;
 
-        String id, productName, description;
-        double cost;
+        String id, firstName, lastName, title;
+        int yob;
 
         try
         {
@@ -60,10 +60,10 @@ public class PersonReader
                 // Split the line into the fields by using split with a comma
                 // use trim to remove leading and trailing spaces
                 // Numbers need to be converted back to numeric values. Here only
-                // the last field "Cost" is a double the rest are strings.
+                // the last field year of birth yob is an int the rest are strings.
 
-                System.out.printf("\n%-8s%-20s%-30s%-8s\n", "ID#", "Product Name", "Description", "Cost");
-                for (int i = 0; i < 66; i++) {System.out.print("=");}
+                System.out.printf("\n%-8s%-25s%-25s%-6s%6s\n", "ID#", "First Name", "Last Name", "Title", "YoB");
+                for (int i = 0; i < 70; i++) {System.out.print("=");}
 
                 String[] fields;
                 for(String l:lines)
@@ -73,10 +73,11 @@ public class PersonReader
                     if(fields.length == FIELDS_LENGTH)
                     {
                         id        = fields[0].trim();
-                        productName = fields[1].trim();
-                        description  = fields[2].trim();
-                        cost = Double.parseDouble(fields[3].trim());
-                        System.out.printf("\n%-8s%-20s%-30s%8.2f", id, productName, description, cost);
+                        firstName = fields[1].trim();
+                        lastName  = fields[2].trim();
+                        title     = fields[3].trim();
+                        yob       = Integer.parseInt(fields[4].trim());
+                        System.out.printf("\n%-8s%-25s%-25s%-6s%6d", id, firstName, lastName, title, yob);
                     }
                     else
                     {
