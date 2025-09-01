@@ -26,7 +26,7 @@ public class ProductWriter
         while (moreProducts)
         {
             productCount += 1;
-            productIDs.add(SafeInput.getRegExString(in, "Enter the ID (#####) of product " + productCount, "\\d{6}"));
+            productIDs.add(SafeInput.getRegExString(in, "Enter the ID (######) of product " + productCount, "\\d{6}"));
             productNames.add(SafeInput.getNonZeroLenString(in, "Enter the name of product " + productCount));
             productDescriptions.add(SafeInput.getNonZeroLenString(in, "Enter the description of product " + productCount));
             productCosts.add(SafeInput.getDouble(in, "Enter the cost of product " + productCount));

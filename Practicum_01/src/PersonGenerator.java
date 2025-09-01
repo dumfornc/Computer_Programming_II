@@ -27,7 +27,7 @@ public class PersonGenerator
         while (morePersons)
         {
             personCount += 1;
-            peopleIDs.add(SafeInput.getRegExString(in, "Enter the ID (#####) of person " + personCount, "\\d{6}"));
+            peopleIDs.add(SafeInput.getRegExString(in, "Enter the ID (######) of person " + personCount, "\\d{6}"));
             peopleFirstNames.add(SafeInput.getNonZeroLenString(in, "Enter the first name of person " + personCount));
             peopleLastNames.add(SafeInput.getNonZeroLenString(in, "Enter the last name of person " + personCount));
             peopleTitles.add(SafeInput.getNonZeroLenString(in, "Enter the title or honorific of person " + personCount));
