@@ -81,7 +81,7 @@ public class ProductReader
                 }
 
             }
-            else  // user closed the file dialog wihtout choosing
+            else  // user closed the file dialog without choosing
             {
                 System.out.println("Failed to choose a file to process");
                 System.out.println("Run the program again!");
