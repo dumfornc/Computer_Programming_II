@@ -3,9 +3,9 @@ import java.util.Objects;
 
 public class Person
 {
+    private final String ID;
     private String firstName;
     private String lastName;
-    private final String ID;
     private String title;
     private int YoB;
 
@@ -19,17 +19,28 @@ public class Person
      * @param title - A string holding the honorific or formal title of a person
      * @param YoB - An integer in the range 1940 - 2010
      */
-    public Person(String firstName, String lastName, String ID, String title, int YoB)
+    public Person(String ID, String firstName, String lastName, String title, int YoB)
     {
+        this.ID = ID;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.ID = ID;
         this.title = title;
         this.YoB = YoB;
 
         Calendar calendar = Calendar.getInstance();
         this.currentYear = calendar.get(Calendar.YEAR);
     }
+
+    /**
+     * Gets the ID tied to the person this instance of the object represents
+     * @return - String of 6 numeric digits
+     */
+    public String getID()
+    {
+        return ID;
+    }
+
+//    No ID setter because the ID shouldn't ever change
 
     /**
      * Gets the first name of the person this instance of the object represents
@@ -66,17 +77,6 @@ public class Person
     {
         this.lastName = lastName;
     }
-
-    /**
-     * Gets the ID tied to the person this instance of the object represents
-     * @return - String of 6 numeric digits
-     */
-    public String getID()
-    {
-        return ID;
-    }
-
-//    No ID setter because the ID shouldn't ever change
 
     /**
      * Gets the formal title of the person this instance of the object represents
