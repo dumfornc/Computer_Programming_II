@@ -11,10 +11,7 @@ public class ProductWriter
 {
     public static void main(String[] args)
     {
-        ArrayList<String> productIDs = new ArrayList<String>();
-        ArrayList<String> productNames = new ArrayList<String>();
-        ArrayList<String> productDescriptions = new ArrayList<String>();
-        ArrayList<Double> productCosts = new ArrayList<Double>();
+        ArrayList<Product> products = new ArrayList<Product>();
 
         Scanner in = new Scanner(System.in);
 
@@ -26,27 +23,14 @@ public class ProductWriter
         while (moreProducts)
         {
             productCount += 1;
-            productIDs.add(SafeInput.getRegExString(in, "Enter the ID (######) of product " + productCount, "\\d{6}"));
-            productNames.add(SafeInput.getNonZeroLenString(in, "Enter the name of product " + productCount));
-            productDescriptions.add(SafeInput.getNonZeroLenString(in, "Enter the description of product " + productCount));
-            productCosts.add(SafeInput.getDouble(in, "Enter the cost of product " + productCount));
+            String productID = SafeInput.getRegExString(in, "Enter the ID (######) of product " + productCount, "\\d{6}");
+            String productName = SafeInput.getNonZeroLenString(in, "Enter the name of product " + productCount);
+            String productDescription = SafeInput.getNonZeroLenString(in, "Enter the description of product " + productCount);
+            double productCost = SafeInput.getDouble(in, "Enter the cost of product " + productCount);
+
+            products.add(new Product(productID, productName, productDescription, productCost));
 
             moreProducts = SafeInput.getYNConfirm(in, "Do you want to enter data for another product");
-        }
-
-        // Below was copied and only slightly cleaned up from NIOWriteTextFile.java
-        ArrayList<String> fileLines = new ArrayList<String>();
-        String productFormat = "%s, %s, %s, %s";
-
-        for (int productIndex = 0; productIndex < productCount; productIndex++)
-        {
-            fileLines.add(productFormat.formatted
-                    (
-                            productIDs.get(productIndex),
-                            productNames.get(productIndex),
-                            productDescriptions.get(productIndex),
-                            productCosts.get(productIndex)
-                    ));
         }
 
         File workingDirectory = new File(System.getProperty("user.dir"));
@@ -61,8 +45,9 @@ public class ProductWriter
 
             // Finally can write the file LOL!
 
-            for(String line : fileLines)
+            for(Product product : products)
             {
+                String line = product.toCSV();
                 writer.write(line, 0, line.length());  // stupid syntax for write rec
                 // 0 is where to start (1st char) the write
                 // rec. length() is how many chars to write (all)
