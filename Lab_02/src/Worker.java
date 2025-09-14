@@ -108,7 +108,7 @@ public class Worker extends Person
                   "lastName": "%s",
                   "title": "%s",
                   "yob": %d,
-                  "hourlyPayRate": %d
+                  "hourlyPayRate": .2f
                 }
                 """;
 
@@ -128,7 +128,7 @@ public class Worker extends Person
               <lastName>%s</lastName>
               <title>%s</title>
               <yob>%d</yob>
-              <hourlyPayRate>%d</hourlyPayRate>
+              <hourlyPayRate>%.2f</hourlyPayRate>
             </worker>
             """;
 
