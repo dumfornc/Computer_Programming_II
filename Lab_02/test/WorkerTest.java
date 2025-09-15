@@ -36,41 +36,95 @@ class WorkerTest {
     }
 
     @Test
-    void displayWeeklyPay()
+    void testDisplayWeeklyPay_NoOvertime()
     {
-        // Redirect System.out to capture the output
-        java.io.ByteArrayOutputStream outContent = new java.io.ByteArrayOutputStream();
-        System.setOut(new java.io.PrintStream(outContent));
+        // Capture console output
+        java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(outputStream));
 
-        w1.displayWeeklyPay(42);
+        w1.displayWeeklyPay(40);
 
-        String output = outContent.toString();
-        assertTrue(output.contains("Alice worked 42.0 hours:"), "Output should mention hours worked");
-        assertTrue(output.contains("2.0 at overtime pay"), "Output should include overtime details");
+        String expected = """
+            Alice worked 40.00 hours:
+            40.00 at regular pay; earning: $800.00
+            0.00 at overtime pay; earning: $0.00
+            Earning a total of $800.00
+            """;
+
+        assertEquals(expected, outputStream.toString());
     }
 
     @Test
-    void toJSON()
+    void testDisplayWeeklyPay_WithOvertime()
     {
-        String json = w1.toJSON();
-        assertTrue(json.contains("\"firstName\": \"Alice\""), "JSON should include first name");
-        assertTrue(json.contains("\"hourlyPayRate\""), "JSON should include hourly pay rate");
+        // Capture console output
+        java.io.ByteArrayOutputStream outputStream = new java.io.ByteArrayOutputStream();
+        System.setOut(new java.io.PrintStream(outputStream));
+
+        w1.displayWeeklyPay(50);
+
+        String expected = """
+            Alice worked 50.00 hours:
+            40.00 at regular pay; earning: $800.00
+            10.00 at overtime pay; earning: $300.00
+            Earning a total of $1100.00
+            """;
+
+        assertEquals(expected, outputStream.toString());
     }
 
     @Test
-    void toXML()
+    void toCSV() {
+        String expected = "123456, Alice, Smith, Ms., 1985, 20.00";
+        assertEquals(expected, w1.toCSV());
+    }
+
+    @Test
+    void testToJSON()
     {
-        String xml = w1.toXML();
-        assertTrue(xml.contains("<worker>"), "XML should start with <worker>");
-        assertTrue(xml.contains("<firstName>Alice</firstName>"), "XML should include first name");
-        assertTrue(xml.contains("</worker>"), "XML should end with </worker>");
+        String expected = """
+            {
+              "id": "123456",
+              "firstName": "Alice",
+              "lastName": "Smith",
+              "title": "Ms.",
+              "yob": 1985,
+              "hourlyPayRate": 20.00
+            }
+            """;
+
+        assertEquals(expected, w1.toJSON());
+    }
+
+    @Test
+    void testToXML()
+    {
+        String expected = """
+            <worker>
+              <id>123456</id>
+              <firstName>Alice</firstName>
+              <lastName>Smith</lastName>
+              <title>Ms.</title>
+              <yob>1985</yob>
+              <hourlyPayRate>20.00</hourlyPayRate>
+            </worker>
+            """;
+
+        assertEquals(expected, w1.toXML());
     }
 
     @Test
     void testToString()
     {
-        String str = w1.toString();
-        assertTrue(str.contains("Alice"), "toString should contain the first name");
-        assertTrue(str.contains("hourlyPayRate=20.0"), "toString should contain hourly pay rate");
+        String expected = "Person{" +
+            "firstName='Alice'" +
+            ", lastName='Smith'" +
+            ", ID='123456'" +
+            ", title='Ms.'" +
+            ", YoB=1985'" +
+            ", hourlyPayRate=20.0" +
+            '}';
+
+        assertEquals(expected, w1.toString());
     }
 }

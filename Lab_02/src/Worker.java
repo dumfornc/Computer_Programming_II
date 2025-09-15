@@ -89,28 +89,43 @@ public class Worker extends Person
 
         totalPay = regularPay + overtimePay;
 
-        System.out.println(super.getFirstName() + " worked " + hoursWorked + " hours:");
-        System.out.println(regularHours + " at regular pay; earning: $" + regularPay);
-        System.out.println(overtimeHours + " at overtime pay; earning: $" + overtimePay);
-        System.out.println("Earning a total of $" + totalPay);
+        String outputFormat = """
+            %s worked %.2f hours:
+            %.2f at regular pay; earning: $%.2f
+            %.2f at overtime pay; earning: $%.2f
+            Earning a total of $%.2f
+            """;
+
+        System.out.print(outputFormat.formatted(super.getFirstName(), hoursWorked, regularHours, regularPay, overtimeHours, overtimePay, totalPay));
+    }
+
+    /**
+     * Returns worker data formatted like a line in a csv file
+     * @return - String "ID, firstName, lastName, title, YoB, weeklyPay"
+     */
+    @Override
+    public String toCSV()
+    {
+        return "%s, %s, %s, %s, %d, %.2f".formatted(super.getID(), super.getFirstName(), super.getLastName(), super.getTitle(), super.getYoB(), this.hourlyPayRate);
     }
 
     /**
      * Returns worker data formatted like a JSON object
      * @return - String of JSON data
      */
+    @Override
     public String toJSON()
     {
         String jsonFormat = """
-                {
-                  "id": "%s",
-                  "firstName": "%s",
-                  "lastName": "%s",
-                  "title": "%s",
-                  "yob": %d,
-                  "hourlyPayRate": .2f
-                }
-                """;
+            {
+              "id": "%s",
+              "firstName": "%s",
+              "lastName": "%s",
+              "title": "%s",
+              "yob": %d,
+              "hourlyPayRate": %.2f
+            }
+            """;
 
         return jsonFormat.formatted(super.getID(), super.getFirstName(), super.getLastName(), super.getTitle(), super.getYoB(), this.hourlyPayRate);
     }
@@ -119,6 +134,7 @@ public class Worker extends Person
      * Returns worker data formatted like an XML object
      * @return - String of xml data
      */
+    @Override
     public String toXML()
     {
         String xmlFormat = """
@@ -136,19 +152,19 @@ public class Worker extends Person
     }
 
     /**
-     * Returns overrides worker string return to be more legible
+     * Overrides worker string return to be more legible
      * @return - String of worker data
      */
     @Override
     public String toString()
     {
         return "Person{" +
-                "firstName='" + super.getFirstName() + '\'' +
-                ", lastName='" + super.getLastName() + '\'' +
-                ", ID='" + super.getID() + '\'' +
-                ", title='" + super.getTitle() + '\'' +
-                ", YoB=" + super.getYoB() + '\'' +
-                ", hourlyPayRate=" + this.hourlyPayRate +
-                '}';
+            "firstName='" + super.getFirstName() + '\'' +
+            ", lastName='" + super.getLastName() + '\'' +
+            ", ID='" + super.getID() + '\'' +
+            ", title='" + super.getTitle() + '\'' +
+            ", YoB=" + super.getYoB() + '\'' +
+            ", hourlyPayRate=" + this.hourlyPayRate +
+            '}';
     }
 }
