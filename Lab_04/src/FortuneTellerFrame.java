@@ -16,8 +16,17 @@ public class FortuneTellerFrame extends JFrame
         this.setFortunes();
 
         setTitle("Fortune Teller");
-        setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // get screen dimensions
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = kit.getScreenSize();
+        int screenHeight = screenSize.height;
+        int screenWidth = screenSize.width;
+
+        // center frame in screen
+        setSize(screenWidth / 2, screenHeight / 2);
+        setLocation(screenWidth / 4, screenHeight / 4);
 
         this.initializeUI();
     }
@@ -57,7 +66,11 @@ public class FortuneTellerFrame extends JFrame
     private JPanel initializeTopPanel()
     {
         JPanel topPanel = new JPanel();
-        ImageIcon fortuneTellerImage = new ImageIcon("Images\\FortuneTeller.png");
+
+        ImageIcon readImagee = new ImageIcon("Images\\FortuneTeller.png");
+        Image originalImage = readImagee.getImage();
+        Image resizedImage = originalImage.getScaledInstance(360, 240, Image.SCALE_SMOOTH);
+        ImageIcon fortuneTellerImage = new ImageIcon(resizedImage);
 
         JLabel title = new JLabel("Are You Ready to Learn the Future?", fortuneTellerImage, JLabel.CENTER);
         title.setHorizontalTextPosition(JLabel.CENTER);
