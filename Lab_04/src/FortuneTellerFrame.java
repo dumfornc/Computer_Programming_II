@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -7,7 +8,7 @@ import java.util.Random;
 public class FortuneTellerFrame extends JFrame
 {
     private ArrayList<String> fortunes = new ArrayList<String>();
-    private JTextArea fortuneTextArea = new JTextArea(24, 50);
+    private JTextArea fortuneTextArea = new JTextArea();
     private Random randomFortuneIndex = new Random();
     private int lastFortuneIndex = -1;
 
@@ -51,9 +52,11 @@ public class FortuneTellerFrame extends JFrame
     {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JPanel topPanel = initializeTopPanel();
         JPanel middlePanel = initializeMiddlePanel();
+        middlePanel.setBorder(new EmptyBorder(0,0,10,0));
         JPanel bottomPanel = initializeBottomPanel();
 
         mainPanel.add(topPanel, BorderLayout.PAGE_START);
