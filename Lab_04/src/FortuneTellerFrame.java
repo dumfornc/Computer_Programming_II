@@ -117,19 +117,14 @@ public class FortuneTellerFrame extends JFrame
 
     public String getFortune()
     {
-        String newFortune = "";
+        int newIndex;
 
-        while (newFortune.isEmpty())
+        do
         {
-            int newIndex = this.randomFortuneIndex.nextInt(12);
+            newIndex = this.randomFortuneIndex.nextInt(12);
+        } while (newIndex == this.lastFortuneIndex);
 
-            if (newIndex != this.lastFortuneIndex)
-            {
-                newFortune = this.fortunes.get(newIndex);
-                this.lastFortuneIndex = newIndex;
-            }
-        }
-
-        return newFortune;
+        this.lastFortuneIndex = newIndex;
+        return this.fortunes.get(newIndex);
     }
 }
