@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 
 public class RockPaperScissorsFrame extends JFrame
 {
@@ -9,6 +10,7 @@ public class RockPaperScissorsFrame extends JFrame
 
     public RockPaperScissorsFrame()
     {
+        setTitle("Rock Paper Scissors");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // get screen dimensions
@@ -26,6 +28,37 @@ public class RockPaperScissorsFrame extends JFrame
 
     private void initializeUI()
     {
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
 
+        JPanel buttonsPanel = initializeButtonPanel();
+        mainPanel.add(buttonsPanel, BorderLayout.PAGE_END);
+    }
+
+    private JPanel initializeButtonPanel()
+    {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(1,4));
+
+        ImageIcon rockImage = new ImageIcon("..\\imgs\\Rock.png");
+        JButton rockButton = new JButton("Rock", rockImage);
+
+        buttonPanel.add(rockButton);
+
+        ImageIcon paperImage = new ImageIcon("..\\imgs\\Paper.png");
+        JButton paperButton = new JButton("Paper", paperImage);
+
+        buttonPanel.add(paperButton);
+
+        ImageIcon scissorsImage = new ImageIcon("..\\imgs\\Scissors.png");
+        JButton scissorsButton = new JButton("Scissors", scissorsImage);
+
+        buttonPanel.add(scissorsButton);
+
+        JButton quitButton = new JButton("Quit");
+        quitButton.addActionListener((e) -> {dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));});
+        buttonPanel.add(quitButton);
+
+        return buttonPanel;
     }
 }
