@@ -29,8 +29,4 @@ public class TicTacToeTile extends JButton
     public int getCol() {
         return col;
     }
-    
-    
-    
-    
 }
