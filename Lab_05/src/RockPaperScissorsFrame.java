@@ -20,6 +20,8 @@ public class RockPaperScissorsFrame extends JFrame
     private JTextField tiesField = new JTextField();
     private JTextField computerWinsField = new JTextField();
 
+    private JTextArea historyText = new JTextArea();
+
     public RockPaperScissorsFrame()
     {
         setTitle("Rock Paper Scissors");
@@ -45,6 +47,9 @@ public class RockPaperScissorsFrame extends JFrame
 
         JPanel statsPanel = initializeStatsPanel();
         mainPanel.add(statsPanel, BorderLayout.PAGE_START);
+
+        JPanel historyPanel = initializeHistoryPanel();
+        mainPanel.add(historyPanel, BorderLayout.CENTER);
 
         JPanel buttonsPanel = initializeButtonPanel();
         mainPanel.add(buttonsPanel, BorderLayout.PAGE_END);
@@ -76,6 +81,20 @@ public class RockPaperScissorsFrame extends JFrame
         statsPanel.add(this.computerWinsField);
 
         return statsPanel;
+    }
+
+    private JPanel initializeHistoryPanel()
+    {
+        JPanel historyPanel = new JPanel(new BorderLayout());
+
+        Font middlePanelFont = new Font("Calibri", Font.PLAIN, 16);
+        this.historyText.setFont(middlePanelFont);
+        this.historyText.setEditable(false);
+
+        JScrollPane scroller = new JScrollPane(this.historyText, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        historyPanel.add(scroller, BorderLayout.CENTER);
+
+        return historyPanel;
     }
 
     private JPanel initializeButtonPanel()
