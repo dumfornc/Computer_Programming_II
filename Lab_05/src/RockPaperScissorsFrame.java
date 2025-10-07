@@ -12,6 +12,7 @@ public class RockPaperScissorsFrame extends JFrame
     private int playerPaperUses = 0;
     private int playerScissorsUses = 0;
 
+    //Variables tracking the outcomes of all games
     private int playerWins = 0;
     private int ties = 0;
     private int computerWins = 0;
@@ -21,8 +22,10 @@ public class RockPaperScissorsFrame extends JFrame
     public static final int PAPER = 1;
     public static final int SCISSORS = 2;
 
+    //Tracks the last choice a player made, -1 means this is the first turn
     public int lastPlayerChoice = -1;
 
+    //Array indexed by the constant values that holds the string names of the options
     public static final String[] optionNames = {"Rock", "Paper", "Scissors"};
 
     //Array indexed by the constant values that holds the words used to describe that option winning
@@ -38,14 +41,15 @@ public class RockPaperScissorsFrame extends JFrame
     //A random number generator to generate the random response of the program
     private final Random programResponseGenerator = new Random();
 
+    //Tracks the strategy that is being used
     private String strategyUsed;
 
     //Creates one instance for each strategy class to be resued for the lifetime of this instance
-    private CheatStrategy cheatStrategyInstance = new CheatStrategy();
-    private LeastUsedStrategy leastStrategyInstance = new LeastUsedStrategy();
-    private MostUsedStrategy mostStrategyInstance = new MostUsedStrategy();
-    private LastUsedStrategy lastStrategyInstance = new LastUsedStrategy();
-    private RandomStrategy randomStrategyInstance = new RandomStrategy();
+    private final CheatStrategy cheatStrategyInstance = new CheatStrategy();
+    private final LeastUsedStrategy leastStrategyInstance = new LeastUsedStrategy();
+    private final MostUsedStrategy mostStrategyInstance = new MostUsedStrategy();
+    private final LastUsedStrategy lastStrategyInstance = new LastUsedStrategy();
+    private final RandomStrategy randomStrategyInstance = new RandomStrategy();
 
     public RockPaperScissorsFrame()
     {
@@ -192,17 +196,17 @@ public class RockPaperScissorsFrame extends JFrame
              this.strategyUsed = "Cheat";
              return cheatStrategyInstance.getMove(playerChoice);
          }
-         else if(11 <= strategyToUse && strategyToUse <= 30)
+         else if(strategyToUse <= 30)
          {
              this.strategyUsed = "Least Used";
              return leastStrategyInstance.getMove(playerChoice);
          }
-         else if(31 <= strategyToUse && strategyToUse <= 50)
+         else if(strategyToUse <= 50)
          {
              this.strategyUsed = "Most Used";
              return mostStrategyInstance.getMove(playerChoice);
          }
-         else if(51 <= strategyToUse && strategyToUse <= 70)
+         else if(strategyToUse <= 70)
          {
              if(lastPlayerChoice == -1)
              {
