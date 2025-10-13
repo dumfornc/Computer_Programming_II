@@ -6,6 +6,19 @@ import java.awt.event.WindowEvent;
 
 public class PizzaGUIFrame extends JFrame
 {
+    private JComboBox pizzaSizeDropdown;
+
+    private JRadioButton thinCrustTypeButton;
+    private JRadioButton regularCrustTypeButton;
+    private JRadioButton deepDishCrustTypeButton;
+
+    private JCheckBox baconToppingBox;
+    private JCheckBox sausageToppingBox;
+    private JCheckBox appleToppingBox;
+    private JCheckBox dragonToppingBox;
+    private JCheckBox extraCheeseToppingBox;
+    private JCheckBox alfredoToppingBox;
+
     private JTextArea resultsText;
 
     PizzaGUIFrame()
@@ -82,9 +95,9 @@ public class PizzaGUIFrame extends JFrame
         pizzaSizePanel.setBorder(new EmptyBorder(40, 10, 40, 10));
 
         String[] pizzaSizes = {"Small ($8)", "Medium ($12)", "Large ($16)", "Super ($20)"};
-        JComboBox pizzaSizeDropdown = new JComboBox(pizzaSizes);
+        this.pizzaSizeDropdown = new JComboBox(pizzaSizes);
 
-        pizzaSizePanel.add(pizzaSizeDropdown, BorderLayout.CENTER);
+        pizzaSizePanel.add(this.pizzaSizeDropdown, BorderLayout.CENTER);
 
         return pizzaSizePanel;
     }
@@ -96,19 +109,19 @@ public class PizzaGUIFrame extends JFrame
 
         ButtonGroup crustTypeButtons = new ButtonGroup();
 
-        JRadioButton thinCrustTypeButton = new JRadioButton("Thin Crust");
-        crustTypeButtons.add(thinCrustTypeButton);
+        this.thinCrustTypeButton = new JRadioButton("Thin Crust");
+        crustTypeButtons.add(this.thinCrustTypeButton);
 
-        JRadioButton regularCrustTypeButton = new JRadioButton("Regular Crust");
-        regularCrustTypeButton.setSelected(true);
-        crustTypeButtons.add(regularCrustTypeButton);
+        this.regularCrustTypeButton = new JRadioButton("Regular Crust");
+        this.regularCrustTypeButton.setSelected(true);
+        crustTypeButtons.add(this.regularCrustTypeButton);
 
-        JRadioButton deepDishCrustTypeButton = new JRadioButton("Deep Dish Crust");
-        crustTypeButtons.add(deepDishCrustTypeButton);
+        this.deepDishCrustTypeButton = new JRadioButton("Deep Dish Crust");
+        crustTypeButtons.add(this.deepDishCrustTypeButton);
 
-        crustTypePanel.add(thinCrustTypeButton);
-        crustTypePanel.add(regularCrustTypeButton);
-        crustTypePanel.add(deepDishCrustTypeButton);
+        crustTypePanel.add(this.thinCrustTypeButton);
+        crustTypePanel.add(this.regularCrustTypeButton);
+        crustTypePanel.add(this.deepDishCrustTypeButton);
 
         return crustTypePanel;
     }
@@ -122,23 +135,23 @@ public class PizzaGUIFrame extends JFrame
                 "Choose Your Pizza Toppings (Each $1):"
         ));
 
-        JCheckBox baconToppingBox = new JCheckBox("Bacon");
-        pizzaToppingsPanel.add(baconToppingBox);
+        this.baconToppingBox = new JCheckBox("Bacon");
+        pizzaToppingsPanel.add(this.baconToppingBox);
 
-        JCheckBox sausageToppingBox = new JCheckBox("Sausage");
-        pizzaToppingsPanel.add(sausageToppingBox);
+        this.sausageToppingBox = new JCheckBox("Sausage");
+        pizzaToppingsPanel.add(this.sausageToppingBox);
 
-        JCheckBox appleToppingBox = new JCheckBox("Apple Slices");
-        pizzaToppingsPanel.add(appleToppingBox);
+        this.appleToppingBox = new JCheckBox("Apple Slices");
+        pizzaToppingsPanel.add(this.appleToppingBox);
 
-        JCheckBox dragonToppingBox = new JCheckBox("Dragon Teeth");
-        pizzaToppingsPanel.add(dragonToppingBox);
+        this.dragonToppingBox = new JCheckBox("Dragon Teeth");
+        pizzaToppingsPanel.add(this.dragonToppingBox);
 
-        JCheckBox extraCheeseToppingBox = new JCheckBox("Extra Cheese");
-        pizzaToppingsPanel.add(extraCheeseToppingBox);
+        this.extraCheeseToppingBox = new JCheckBox("Extra Cheese");
+        pizzaToppingsPanel.add(this.extraCheeseToppingBox);
 
-        JCheckBox alfredoToppingBox = new JCheckBox("Alfredo Sauce");
-        pizzaToppingsPanel.add(alfredoToppingBox);
+        this.alfredoToppingBox = new JCheckBox("Alfredo Sauce");
+        pizzaToppingsPanel.add(this.alfredoToppingBox);
 
         return pizzaToppingsPanel;
     }
@@ -150,6 +163,7 @@ public class PizzaGUIFrame extends JFrame
         resultsPanel.setBorder(BorderFactory.createLoweredBevelBorder());
 
         this.resultsText = new JTextArea();
+        this.resultsText.setEditable(false);
         resultsPanel.add(this.resultsText, BorderLayout.CENTER);
 
         return resultsPanel;
@@ -164,8 +178,8 @@ public class PizzaGUIFrame extends JFrame
 //        JButton orderButton = initializeOrderButton();
 //        buttonsPanel.add(orderButton);
 //
-//        JButton clearButton = initializeClearButton();
-//        buttonsPanel.add(clearButton);
+        JButton clearButton = initializeClearButton();
+        buttonsPanel.add(clearButton);
 
         JButton quitButton = initializeQuitButton();
         buttonsPanel.add(quitButton);
@@ -178,10 +192,29 @@ public class PizzaGUIFrame extends JFrame
 //
 //    }
 //
-//    private JButton initializeClearButton()
-//    {
-//
-//    }
+    private JButton initializeClearButton()
+    {
+        JButton clearButton = new JButton("Clear Form");
+        clearButton.addActionListener(this::clearButtonHandler);
+
+        return clearButton;
+    }
+
+    private void clearButtonHandler(ActionEvent e)
+    {
+        this.pizzaSizeDropdown.setSelectedIndex(0);
+
+        this.regularCrustTypeButton.setSelected(true);
+
+        this.baconToppingBox.setSelected(false);
+        this.sausageToppingBox.setSelected(false);
+        this.appleToppingBox.setSelected(false);
+        this.dragonToppingBox.setSelected(false);
+        this.extraCheeseToppingBox.setSelected(false);
+        this.alfredoToppingBox.setSelected(false);
+
+        this.resultsText.setText("");
+    }
 
     private JButton initializeQuitButton()
     {
