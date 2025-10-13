@@ -8,6 +8,8 @@ public class PizzaGUIFrame extends JFrame
 {
     private JComboBox pizzaSizeDropdown;
 
+    private ButtonGroup crustTypeButtons;
+
     private JRadioButton thinCrustTypeButton;
     private JRadioButton regularCrustTypeButton;
     private JRadioButton deepDishCrustTypeButton;
@@ -20,6 +22,12 @@ public class PizzaGUIFrame extends JFrame
     private JCheckBox alfredoToppingBox;
 
     private JTextArea resultsText;
+
+    private int[] pizzaCosts = {8, 12, 16, 20};
+
+    private String resultEntryFormat = "%-30s%05.2f\n";
+    
+    private double currentPizzaCost;
 
     PizzaGUIFrame()
     {
@@ -42,15 +50,15 @@ public class PizzaGUIFrame extends JFrame
     private void initializeUI()
     {
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(3, 1));
+        mainPanel.setLayout(new BorderLayout());
 
         JPanel topPanel = initializeOrderPanel();
         JPanel middlePanel = initializeResultsPanel();
         JPanel bottomPanel = initializeButtonsPanel();
 
-        mainPanel.add(topPanel);
-        mainPanel.add(middlePanel);
-        mainPanel.add(bottomPanel);
+        mainPanel.add(topPanel, BorderLayout.PAGE_START);
+        mainPanel.add(middlePanel, BorderLayout.CENTER);
+        mainPanel.add(bottomPanel, BorderLayout.PAGE_END);
 
         this.add(mainPanel);
     }
@@ -107,17 +115,17 @@ public class PizzaGUIFrame extends JFrame
         JPanel crustTypePanel = new JPanel();
         crustTypePanel.setLayout(new GridLayout(3, 1));
 
-        ButtonGroup crustTypeButtons = new ButtonGroup();
+        this.crustTypeButtons = new ButtonGroup();
 
         this.thinCrustTypeButton = new JRadioButton("Thin Crust");
-        crustTypeButtons.add(this.thinCrustTypeButton);
+        this.crustTypeButtons.add(this.thinCrustTypeButton);
 
         this.regularCrustTypeButton = new JRadioButton("Regular Crust");
         this.regularCrustTypeButton.setSelected(true);
-        crustTypeButtons.add(this.regularCrustTypeButton);
+        this.crustTypeButtons.add(this.regularCrustTypeButton);
 
         this.deepDishCrustTypeButton = new JRadioButton("Deep Dish Crust");
-        crustTypeButtons.add(this.deepDishCrustTypeButton);
+        this.crustTypeButtons.add(this.deepDishCrustTypeButton);
 
         crustTypePanel.add(this.thinCrustTypeButton);
         crustTypePanel.add(this.regularCrustTypeButton);
@@ -162,8 +170,11 @@ public class PizzaGUIFrame extends JFrame
         resultsPanel.setLayout(new BorderLayout());
         resultsPanel.setBorder(BorderFactory.createLoweredBevelBorder());
 
+        Font resultsFont = new Font("Cascadia Mono", Font.PLAIN, 14);
+
         this.resultsText = new JTextArea();
         this.resultsText.setEditable(false);
+        this.resultsText.setFont(resultsFont);
         resultsPanel.add(this.resultsText, BorderLayout.CENTER);
 
         return resultsPanel;
@@ -175,9 +186,9 @@ public class PizzaGUIFrame extends JFrame
         buttonsPanel.setLayout(new GridLayout(1 ,3));
         buttonsPanel.setBorder(BorderFactory.createLoweredBevelBorder());
 
-//        JButton orderButton = initializeOrderButton();
-//        buttonsPanel.add(orderButton);
-//
+        JButton orderButton = initializeOrderButton();
+        buttonsPanel.add(orderButton);
+
         JButton clearButton = initializeClearButton();
         buttonsPanel.add(clearButton);
 
@@ -187,11 +198,110 @@ public class PizzaGUIFrame extends JFrame
         return buttonsPanel;
     }
 
-//    private JButton initializeOrderButton()
-//    {
-//
-//    }
-//
+    private JButton initializeOrderButton()
+    {
+        JButton orderButton = new JButton("Order");
+        orderButton.addActionListener(this::orderButtonHandler);
+
+        return orderButton;
+    }
+
+    private void orderButtonHandler(ActionEvent e)
+    {
+        this.currentPizzaCost = 0.0;
+        
+        String resultBeginningAndEnd = "=".repeat(35) + "\n";
+        String resultLineOne = getOrderResultLineOne();
+        String resultIngredientLines = getResultIngredientLines();
+        String resultSubtotalLine = this.resultEntryFormat.formatted("Subtotal:", this.currentPizzaCost);
+        double resultTax = this.currentPizzaCost * .07;
+        String resultTaxLine = this.resultEntryFormat.formatted("Tax:", resultTax);
+        String resultTotalSeparator = "-".repeat(35) + "\n";
+        String resultTotal = this.resultEntryFormat.formatted("Total:", this.currentPizzaCost + resultTax);
+
+        this.resultsText.setText(
+                resultBeginningAndEnd +
+                resultLineOne +
+                resultIngredientLines +
+                "\n" +
+                resultSubtotalLine +
+                resultTaxLine +
+                resultTotalSeparator +
+                resultTotal +
+                resultBeginningAndEnd
+        );
+    }
+
+    private String getOrderResultLineOne()
+    {
+        String pizzaSize = this.pizzaSizeDropdown.getSelectedItem().toString().split(" ")[0];
+        
+        int pizzaBaseCost = this.pizzaCosts[this.pizzaSizeDropdown.getSelectedIndex()];
+        this.currentPizzaCost += pizzaBaseCost;
+
+        String crustType;
+
+        if(this.thinCrustTypeButton.isSelected())
+        {
+            crustType = "Thin Crust";
+        }
+        else if(this.regularCrustTypeButton.isSelected())
+        {
+            crustType = "Regular Crust";
+        }
+        else //if(this.deepDishCrustTypeButton.isSelected())
+        {
+            crustType = "Deep Dish Crust";
+        }
+
+        String crustAndSize = pizzaSize + " " + crustType;
+
+        return this.resultEntryFormat.formatted(crustAndSize, ((double) pizzaBaseCost));
+    }
+
+    private String getResultIngredientLines()
+    {
+        String resultIngredientLines = "";
+
+        if(this.baconToppingBox.isSelected())
+        {
+            resultIngredientLines += this.resultEntryFormat.formatted("Bacon", 1.00);
+            currentPizzaCost += 1;
+        }
+
+        if(this.sausageToppingBox.isSelected())
+        {
+            resultIngredientLines += this.resultEntryFormat.formatted("Sausage", 1.00);
+            currentPizzaCost += 1;
+        }
+
+        if(this.appleToppingBox.isSelected())
+        {
+            resultIngredientLines += this.resultEntryFormat.formatted("Apple Slices", 1.00);
+            currentPizzaCost += 1;
+        }
+
+        if(this.dragonToppingBox.isSelected())
+        {
+            resultIngredientLines += this.resultEntryFormat.formatted("Dragon Teeth", 1.00);
+            currentPizzaCost += 1;
+        }
+
+        if(this.extraCheeseToppingBox.isSelected())
+        {
+            resultIngredientLines += this.resultEntryFormat.formatted("Extra Cheese", 1.00);
+            currentPizzaCost += 1;
+        }
+
+        if(this.alfredoToppingBox.isSelected())
+        {
+            resultIngredientLines += this.resultEntryFormat.formatted("Alfredo Sauce", 1.00);
+            currentPizzaCost += 1;
+        }
+
+        return resultIngredientLines;
+    }
+
     private JButton initializeClearButton()
     {
         JButton clearButton = new JButton("Clear Form");
