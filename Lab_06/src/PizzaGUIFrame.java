@@ -1,6 +1,8 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 
 public class PizzaGUIFrame extends JFrame
 {
@@ -160,9 +162,45 @@ public class PizzaGUIFrame extends JFrame
         buttonsPanel.setBorder(BorderFactory.createLoweredBevelBorder());
 
 //        JButton orderButton = initializeOrderButton();
+//        buttonsPanel.add(orderButton);
+//
 //        JButton clearButton = initializeClearButton();
-//        JButton quitButton = initializeQuitButton();
+//        buttonsPanel.add(clearButton);
+
+        JButton quitButton = initializeQuitButton();
+        buttonsPanel.add(quitButton);
 
         return buttonsPanel;
+    }
+
+//    private JButton initializeOrderButton()
+//    {
+//
+//    }
+//
+//    private JButton initializeClearButton()
+//    {
+//
+//    }
+
+    private JButton initializeQuitButton()
+    {
+        JButton quitButton = new JButton("Quit");
+        quitButton.addActionListener(this::quitButtonHandler);
+
+        return quitButton;
+    }
+
+    private void quitButtonHandler(ActionEvent e)
+    {
+        int quitConfirmation = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to quit?",
+                "Quit Confirmation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if(quitConfirmation == JOptionPane.YES_OPTION) {dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));}
     }
 }
