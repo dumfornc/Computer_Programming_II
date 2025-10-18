@@ -14,4 +14,15 @@ public class Invoice
     {
         products.put(newProduct, numberOfUnits);
     }
+
+    public double getTotalCost()
+    {
+        double totalCost = 0;
+        for(Map.Entry<Product, Integer> orderLine : products.entrySet())
+        {
+            totalCost += orderLine.getKey().getCost(orderLine.getValue());
+        }
+
+        return totalCost;
+    }
 }
