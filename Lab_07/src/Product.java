@@ -3,7 +3,7 @@ public class Product
     private String name;
     private double unitCost;
 
-    public void Product(String name, double unitCost)
+    public Product(String name, double unitCost)
     {
         this.name = name;
         this.unitCost = unitCost;

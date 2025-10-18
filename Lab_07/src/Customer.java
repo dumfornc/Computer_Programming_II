@@ -5,7 +5,7 @@ public class Customer {
     private String state;
     private String zipCode;
 
-    public void Customer(String name, String streetAddress, String state, String zipCode)
+    public Customer(String name, String streetAddress, String state, String zipCode)
     {
         this.name = name;
         this.streetAddress = streetAddress;
