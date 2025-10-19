@@ -1,6 +1,6 @@
 public class Product
 {
-    private String name;
+    private final String name;
     private double unitCost;
 
     public Product(String name, double unitCost)
