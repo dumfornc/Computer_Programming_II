@@ -5,10 +5,11 @@ public class Customer {
     private String state;
     private String zipCode;
 
-    public Customer(String name, String streetAddress, String state, String zipCode)
+    public Customer(String name, String streetAddress, String city, String state, String zipCode)
     {
         this.name = name;
         this.streetAddress = streetAddress;
+        this.city = city;
         this.state = state;
         this.zipCode = zipCode;
     }
