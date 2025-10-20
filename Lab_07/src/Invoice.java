@@ -5,7 +5,7 @@ public class Invoice
     private final Customer customer;
     private Map<Product, Integer> products;
 
-    private final String invoiceItemFormat = "%30s%3d$%5.02f$%5.02f\n";
+    private final String invoiceItemFormat = "%-30s%5d%11.02f%11.02f\n";
 
     public Invoice(Customer customer, Map<Product, Integer> products) {
         this.customer = customer;
@@ -32,10 +32,10 @@ public class Invoice
     public String toString()
     {
         StringBuilder invoiceString = new StringBuilder();
-        invoiceString.append("Invoice:\n");
+        invoiceString.append("\nInvoice:\n");
         invoiceString.append(customer.getFullAddress()).append("\n");
-        invoiceString.append("-".repeat(43)).append("\n");
-        invoiceString.append("%30s%3s$%5s$%5sf\n".formatted("Item", "Qty", "Price", "Total"));
+        invoiceString.append("-".repeat(57)).append("\n");
+        invoiceString.append("%-30s%5s%11s%11s\n".formatted("Item", "Qty", "Price ($)", "Total ($)"));
 
         for(Map.Entry<Product, Integer> orderLine : products.entrySet())
         {
@@ -48,7 +48,7 @@ public class Invoice
         }
 
 
-        invoiceString.append("-".repeat(43)).append("\n");
+        invoiceString.append("-".repeat(57)).append("\n");
         invoiceString.append("Amount Due: $").append(getTotalCost());
 
         return invoiceString.toString();
