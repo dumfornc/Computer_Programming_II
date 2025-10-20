@@ -61,8 +61,8 @@ public class InvoiceDisplayFrame extends JFrame
         JPanel middlePanel = initializeOrderContentsPanel();
         mainPanel.add(middlePanel, BorderLayout.CENTER);
 
-//        JPanel bottomPanel = initializeButtonsPanel(); //Create invoice button & quit button (move customer buttons here too?)
-//        mainPanel.add(bottomPanel);
+        JPanel bottomPanel = initializeButtonsPanel(); //Create invoice button & quit button (move customer buttons here too?)
+        mainPanel.add(bottomPanel);
 
         this.add(mainPanel);
     }
@@ -250,6 +250,7 @@ public class InvoiceDisplayFrame extends JFrame
 
         this.productNameField = new JTextField();
         this.productCostField = new JSpinner(new SpinnerNumberModel(1.99, 0.01, 999.99, 1));
+        this.productCostField.setEditor(new JSpinner.NumberEditor(productCostField, "###.##"));
 
         createProductPanel.add(new JLabel("Product Name:"));
         createProductPanel.add(productNameField);
@@ -267,6 +268,7 @@ public class InvoiceDisplayFrame extends JFrame
         newProductLine.setBorder(BorderFactory.createLoweredBevelBorder());
 
         numProductToOrderField = new JSpinner(new SpinnerNumberModel(1, 1, 999, 1));
+        numProductToOrderField.setEditor(new JSpinner.NumberEditor(numProductToOrderField, "###"));
 
         newProductLine.add(new JLabel(productNameField.getText()));
         newProductLine.add(new JLabel("$" + productCostField.getValue().toString()));
