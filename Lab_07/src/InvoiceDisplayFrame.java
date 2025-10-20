@@ -3,8 +3,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class InvoiceDisplayFrame extends JFrame
 {
@@ -62,7 +64,7 @@ public class InvoiceDisplayFrame extends JFrame
         mainPanel.add(middlePanel, BorderLayout.CENTER);
 
         JPanel bottomPanel = initializeButtonsPanel(); //Create invoice button & quit button (move customer buttons here too?)
-        mainPanel.add(bottomPanel);
+        mainPanel.add(bottomPanel, BorderLayout.PAGE_END);
 
         this.add(mainPanel);
     }
@@ -287,5 +289,67 @@ public class InvoiceDisplayFrame extends JFrame
         mainPanel.add(newOrderContentsPanel, BorderLayout.CENTER);
         mainPanel.revalidate();
         mainPanel.repaint();
+    }
+
+    private JPanel initializeButtonsPanel()
+    {
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(1, 2));
+
+        JButton createInvoiceButton = new JButton("Print Invoice");
+        createInvoiceButton.addActionListener(this::createInvoiceButtonHandler);
+        buttonsPanel.add(createInvoiceButton);
+
+        JButton quitButton = new JButton("Quit");
+        quitButton.addActionListener(this::quitButtonHandler);
+        buttonsPanel.add(quitButton);
+
+        return buttonsPanel;
+    }
+
+    private void createInvoiceButtonHandler(ActionEvent e)
+    {
+        if(this.customer == null)
+        {
+            JOptionPane.showMessageDialog(
+                this,
+                "Must set customer data before creating invoice",
+                "Incomplete customer data",
+                JOptionPane.WARNING_MESSAGE
+            );
+        }
+        else if(this.orderContents.isEmpty())
+        {
+            JOptionPane.showMessageDialog(
+                this,
+                "Must have at least one product in order to create an invoice",
+                "Incomplete order data",
+                JOptionPane.WARNING_MESSAGE
+            );
+        }
+        else
+        {
+            LinkedHashMap<Product, Integer> productOrders = new LinkedHashMap<Product, Integer>();
+            for(Map.Entry<Product, JSpinner> entry : orderContents.entrySet())
+            {
+                productOrders.put(entry.getKey(), (Integer) entry.getValue().getValue());
+            }
+
+            Invoice newInvoice = new Invoice(customer, productOrders);
+            System.out.print(newInvoice);
+        }
+    }
+
+    private void quitButtonHandler(ActionEvent e)
+    {
+        int quitConfirmation = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to quit?",
+                "Quit Confirmation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if(quitConfirmation == JOptionPane.YES_OPTION) {dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));}
     }
 }
