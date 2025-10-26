@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6d4fcfc7-c881-4dfb-86cc-b5c6e40bcb77" name="Changes" comment="[Lab07] Updating some formatting of Invoice.java toString" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;dumfornc&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/dumfornc/Computer_Programming_II.git&quot;,
+    &quot;accountId&quot;: &quot;ca8ebcc3-512a-4f7c-9f6a-f464acb7e6cc&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="34Fpi8XgHTObrS4txHEF4Y9Hk2Q" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.InvoiceDisplayRunner.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Lab_07" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Lab_07" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6d4fcfc7-c881-4dfb-86cc-b5c6e40bcb77" name="Changes" comment="" />
+      <created>1760819301042</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1760819301042</updated>
+    </task>
+    <task id="LOCAL-00001" summary="[Lab07] Created all files, filled out simple classes.">
+      <option name="closed" value="true" />
+      <created>1760822726386</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1760822726386</updated>
+    </task>
+    <task id="LOCAL-00002" summary="[Lab07] Created Invoice.java minor changes to customer and product">
+      <option name="closed" value="true" />
+      <created>1760828724667</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1760828724667</updated>
+    </task>
+    <task id="LOCAL-00003" summary="[Lab07] Implemented get total cost">
+      <option name="closed" value="true" />
+      <created>1760830526830</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1760830526830</updated>
+    </task>
+    <task id="LOCAL-00004" summary="[Lab07] Overrode toString method of Invoice. That should be the last coding that happens outside the ui.">
+      <option name="closed" value="true" />
+      <created>1760857193040</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1760857193040</updated>
+    </task>
+    <task id="LOCAL-00005" summary="[Lab07] Added city to customer init.">
+      <option name="closed" value="true" />
+      <created>1760902733735</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1760902733735</updated>
+    </task>
+    <task id="LOCAL-00006" summary="[Lab07] WIP commiting when I leave. Building out scaffold and plan for UI.">
+      <option name="closed" value="true" />
+      <created>1760902757636</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1760902757636</updated>
+    </task>
+    <task id="LOCAL-00007" summary="[Lab07] Finished top panel to input customer data">
+      <option name="closed" value="true" />
+      <created>1760926492415</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1760926492415</updated>
+    </task>
+    <task id="LOCAL-00008" summary="[Lab07] Finished middle panel that adds products to the order.">
+      <option name="closed" value="true" />
+      <created>1760935254269</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1760935254269</updated>
+    </task>
+    <task id="LOCAL-00009" summary="[Lab07] Added filters to numeric inputs to sanitize them.">
+      <option name="closed" value="true" />
+      <created>1760935723659</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1760935723659</updated>
+    </task>
+    <task id="LOCAL-00010" summary="[Lab07] Added bottom pane with print invoice and quit buttons.">
+      <option name="closed" value="true" />
+      <created>1760938436935</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1760938436935</updated>
+    </task>
+    <task id="LOCAL-00011" summary="[Lab07] Updating some formatting of Invoice.java toString">
+      <option name="closed" value="true" />
+      <created>1760938464516</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1760938464516</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="[Lab07] Created all files, filled out simple classes." />
+    <MESSAGE value="[Lab07] Created Invoice.java minor changes to customer and product" />
+    <MESSAGE value="[Lab07] Implemented get total cost" />
+    <MESSAGE value="[Lab07] Overrode toString method of Invoice. That should be the last coding that happens outside the ui." />
+    <MESSAGE value="[Lab07] Added city to customer init." />
+    <MESSAGE value="[Lab07] WIP commiting when I leave. Building out scaffold and plan for UI." />
+    <MESSAGE value="[Lab07] Finished top panel to input customer data" />
+    <MESSAGE value="[Lab07] Finished middle panel that adds products to the order." />
+    <MESSAGE value="[Lab07] Added filters to numeric inputs to sanitize them." />
+    <MESSAGE value="[Lab07] Added bottom pane with print invoice and quit buttons." />
+    <MESSAGE value="[Lab07] Updating some formatting of Invoice.java toString" />
+    <option name="LAST_COMMIT_MESSAGE" value="[Lab07] Updating some formatting of Invoice.java toString" />
+  </component>
+</project>
