@@ -89,7 +89,7 @@ public class BattleShipGame
 
         do
         {
-            int shipOrientation = shipRandomizer.nextInt(HORIZONTAL_SHIP, VERTICAL_SHIP);
+            int shipOrientation = shipRandomizer.nextBoolean() ? HORIZONTAL_SHIP : VERTICAL_SHIP;
 
             if (shipOrientation == HORIZONTAL_SHIP)
             {
@@ -135,7 +135,7 @@ public class BattleShipGame
                 for(int i = 0; i < this.boardRows; i++){validRows.add(i);}
                 for(int i = 0; i < this.boardColumns; i++){validColumns.add(i);}
             }
-        } while(!openStartingIndexes.isEmpty());
+        } while(openStartingIndexes.isEmpty());
     }
 
     private ArrayList<Integer> getAvailableRowStartIndexes(int length, int shipRow)
@@ -188,7 +188,20 @@ public class BattleShipGame
 
     private void placeShipOnBoard(int row, int col, int orientation, int length)
     {
-
+        if(orientation == HORIZONTAL_SHIP)
+        {
+            for(int i = 0; i < length; i++)
+            {
+                board[row][col + i] = SHIP_NOT_SHOT;
+            }
+        }
+        else if(orientation == VERTICAL_SHIP)
+        {
+            for(int i = 0; i < length; i++)
+            {
+                board[row + i][col] = SHIP_NOT_SHOT;
+            }
+        }
     }
 
     public int getCurrentMissStreak()
