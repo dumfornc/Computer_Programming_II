@@ -8,6 +8,14 @@ public class BattleShipGame
     public static final int EMPTY_YES_SHOT = 12;
     public static final int SHIP_YES_SHOT = 22;
 
+    // Constants describing game state after an action
+    public static final int NORMAL_MISS = 0;
+    public static final int STRIKE_MISS = 1;
+    public static final int LOOSE_MISS = 2;
+    public static final int NORMAL_HIT = 3;
+    public static final int WIN_HIT = 4;
+    public static final int TILE_PREVIOUSLY_SHOT = 5;
+
     // Constants describing if a ship is to be place horizontal or vertical
     private static final int HORIZONTAL_SHIP = 0;
     private static final int VERTICAL_SHIP = 1;
@@ -28,6 +36,8 @@ public class BattleShipGame
 
     private final Integer[] shipSizes;
 
+    private final int totalPossibleHits;
+
     private int currentMissStreak;
     private int totalMisses;
     private int totalHits;
@@ -46,7 +56,9 @@ public class BattleShipGame
         Arrays.sort(shipSizes, Collections.reverseOrder());
         this.shipSizes = shipSizes;
 
-        board = new Integer[boardRows][boardColumns];
+        this.totalPossibleHits = Arrays.stream(this.shipSizes).mapToInt(Integer::intValue).sum();
+
+        this.board = new Integer[boardRows][boardColumns];
 
         this.startNewGame();
     }
@@ -202,6 +214,71 @@ public class BattleShipGame
                 board[row + i][col] = SHIP_NOT_SHOT;
             }
         }
+    }
+
+    public int makeMove(int row, int col)
+    {
+        int moveResult;
+
+        int tileState = board[row][col];
+
+        if(tileState == EMPTY_NOT_SHOT)
+        {
+            board[row][col] = EMPTY_YES_SHOT;
+            moveResult = handleMiss();
+        }
+        else if(tileState == SHIP_NOT_SHOT)
+        {
+            board[row][col] = SHIP_YES_SHOT;
+            moveResult = handleHit();
+        }
+        else
+        {
+            moveResult = TILE_PREVIOUSLY_SHOT;
+        }
+
+        return moveResult;
+    }
+
+    private int handleMiss()
+    {
+        int missType;
+
+        totalMisses++;
+
+        if(currentMissStreak < 4)
+        {
+            currentMissStreak++;
+            missType = NORMAL_MISS;
+        }
+        else//if(currentMissStreak >= 5)
+        {
+            currentMissStreak = 0;
+
+            strikes++;
+            missType = strikes >= 3 ? LOOSE_MISS : STRIKE_MISS;
+        }
+
+        return missType;
+    }
+
+    public int handleHit()
+    {
+        int hitType;
+
+        currentMissStreak = 0;
+        totalHits++;
+
+        if(totalHits < totalPossibleHits)
+        {
+            hitType = NORMAL_HIT;
+        }
+        else//if(totalHits >= totalPossibleHits)
+        {
+            hitType = WIN_HIT;
+        }
+
+        return hitType;
     }
 
     public int getCurrentMissStreak()
