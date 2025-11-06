@@ -29,7 +29,7 @@ public class BattleShipGame
 
     private static final Random shipRandomizer = new Random();
 
-    private final Integer[][] board;
+    private Integer[][] board;
 
     private int boardRows;
     private int boardColumns;
@@ -58,9 +58,18 @@ public class BattleShipGame
 
         this.totalPossibleHits = Arrays.stream(this.shipSizes).mapToInt(Integer::intValue).sum();
 
-        this.board = new Integer[boardRows][boardColumns];
-
         this.startNewGame();
+
+//        // Prints board for debugging purposes
+//        for (int i = 0; i < board.length; i++) {
+//            // Iterate through columns in the current row
+//            for (int j = 0; j < board[i].length; j++) {
+//                // Print the element, followed by a space for separation
+//                System.out.print(board[i][j] + " ");
+//            }
+//            // After printing all elements in a row, move to the next line
+//            System.out.println();
+//        }
     }
 
     public void startNewGame()
@@ -69,6 +78,8 @@ public class BattleShipGame
         this.totalMisses = 0;
         this.totalHits = 0;
         this.strikes = 0;
+
+        this.board = new Integer[boardRows][boardColumns];
 
         for(int row = 0; row < this.boardRows; row++)
         {
@@ -83,9 +94,19 @@ public class BattleShipGame
 
     private void placeShips()
     {
+        int oldRows = this.boardRows;
+        int oldCols = this.boardColumns;
+
         for(Integer shipLength : this.shipSizes)
         {
             placeShip(shipLength);
+
+            // If the board was enlarged redo the ship placements
+            if (this.boardRows != oldRows || this.boardColumns != oldCols)
+            {
+                startNewGame();
+                return;
+            }
         }
     }
 
@@ -146,6 +167,8 @@ public class BattleShipGame
 
                 for(int i = 0; i < this.boardRows; i++){validRows.add(i);}
                 for(int i = 0; i < this.boardColumns; i++){validColumns.add(i);}
+
+                break;
             }
         } while(openStartingIndexes.isEmpty());
     }
