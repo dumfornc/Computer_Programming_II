@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class BattleShipTile extends JButton
 {
@@ -40,6 +42,9 @@ public class BattleShipTile extends JButton
 
     public void setTileState(int newState)
     {
+        int buttonWidth = getWidth();
+        int buttonHeight = getHeight();
+
         if(newState == TILE_IS_EMPTY)
         {
             this.tileState = TILE_IS_EMPTY;
@@ -50,16 +55,35 @@ public class BattleShipTile extends JButton
         else if(newState == TILE_IS_MISS)
         {
             this.tileState = TILE_IS_MISS;
-            setIcon(missIcon);
+
+            ImageIcon disabledIcon = rescaleIcon(missIcon, buttonWidth, buttonHeight);
+            setDisabledIcon(disabledIcon);
+            setIcon(disabledIcon);
 
             setEnabled(false);
         }
         else if(newState == TILE_IS_HIT)
         {
             this.tileState = TILE_IS_HIT;
-            setIcon(hitIcon);
+
+            ImageIcon disabledIcon = rescaleIcon(hitIcon, buttonWidth, buttonHeight);
+            setDisabledIcon(disabledIcon);
+            setIcon(disabledIcon);
 
             setEnabled(false);
         }
+    }
+
+    private ImageIcon rescaleIcon(ImageIcon icon, int width, int height)
+    {
+        Image img = icon.getImage();
+        BufferedImage scaled = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = scaled.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.drawImage(img, 0,0, width, height, null);
+        g2d.dispose();
+
+        return new ImageIcon(scaled);
     }
 }
