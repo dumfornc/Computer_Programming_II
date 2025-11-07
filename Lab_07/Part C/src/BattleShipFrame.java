@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 
 public class BattleShipFrame extends JFrame
 {
@@ -16,6 +17,8 @@ public class BattleShipFrame extends JFrame
     private JTextField missStreakDisplay;
     private JTextField totalMissesDisplay;
     private JTextField hitsDisplay;
+
+    private JPanel mainPanel;
 
     public BattleShipFrame()
     {
@@ -42,7 +45,7 @@ public class BattleShipFrame extends JFrame
     {
         setTitle("BattleShip");
 
-        JPanel mainPanel = new JPanel();
+        this.mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
         JPanel statusPanel = initializeStatusPanel();
@@ -50,9 +53,9 @@ public class BattleShipFrame extends JFrame
 
         JPanel battleShipBoardPanel = initializeBattleShipBoardPanel();
         mainPanel.add(battleShipBoardPanel, BorderLayout.CENTER);
-//
-//        JPanel controlsPanel = initializeControlsPanel();
-//        mainPanel.add(controlsPanel, BorderLayout.PAGE_END);
+
+        JPanel controlsPanel = initializeControlsPanel();
+        mainPanel.add(controlsPanel, BorderLayout.PAGE_END);
 
         add(mainPanel);
     }
@@ -129,26 +132,117 @@ public class BattleShipFrame extends JFrame
             int buttonCol = source.getCol();
 
             int moveResult = this.gameLogic.makeMove(buttonRow, buttonCol);
-            if(moveResult == BattleShipGame.NORMAL_MISS)
+            if(moveResult == BattleShipGame.NORMAL_MISS || moveResult == BattleShipGame.STRIKE_MISS)
             {
-
-            }
-            else if(moveResult == BattleShipGame.STRIKE_MISS)
-            {
-
+                source.setTileState(BattleShipTile.TILE_IS_MISS);
+                updateStatusPanel();
             }
             else if(moveResult == BattleShipGame.LOOSE_MISS)
             {
+                source.setTileState(BattleShipTile.TILE_IS_MISS);
+                updateStatusPanel();
 
+                int keepPlaying = JOptionPane.showConfirmDialog(
+                        this,
+                        "You lost, would you like to play again?",
+                        "You Loose",
+                        JOptionPane.YES_NO_OPTION);
+
+                if(keepPlaying == JOptionPane.YES_OPTION)
+                {
+                    restartGame();
+                }
+                else
+                {
+                    dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+                }
             }
             else if(moveResult == BattleShipGame.NORMAL_HIT)
             {
-
+                source.setTileState(BattleShipTile.TILE_IS_HIT);
+                updateStatusPanel();
             }
             else if(moveResult == BattleShipGame.WIN_HIT)
             {
+                source.setTileState(BattleShipTile.TILE_IS_HIT);
+                updateStatusPanel();
 
+                int keepPlaying = JOptionPane.showConfirmDialog(
+                        this,
+                        "You won, would you like to play again?",
+                        "You Win",
+                        JOptionPane.YES_NO_OPTION);
+
+                if(keepPlaying == JOptionPane.YES_OPTION)
+                {
+                    restartGame();
+                }
+                else
+                {
+                    dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+                }
             }
+        }
+    }
+
+    private void restartGame()
+    {
+        this.gameLogic.startNewGame();
+        updateStatusPanel();
+
+        BorderLayout layout = (BorderLayout) this.mainPanel.getLayout();
+        Component centerComponent = layout.getLayoutComponent(BorderLayout.CENTER);
+
+        this.mainPanel.remove(centerComponent);
+
+        JPanel newBattleShipBoardPanel = initializeBattleShipBoardPanel();
+        this.mainPanel.add(newBattleShipBoardPanel, BorderLayout.CENTER);
+
+        revalidate();
+        repaint();
+    }
+
+    private JPanel initializeControlsPanel()
+    {
+        JPanel controlsPanel = new JPanel();
+        controlsPanel.setLayout(new GridLayout(1, 2));
+
+        JButton playAgainButton = new JButton("Play Again");
+        playAgainButton.addActionListener(this::handlePlayAgainButton);
+        controlsPanel.add(playAgainButton);
+
+        JButton quitButton = new JButton("Quit");
+        quitButton.addActionListener(this::handleQuitButton);
+        controlsPanel.add(quitButton);
+
+        return controlsPanel;
+    }
+
+    private void handlePlayAgainButton(ActionEvent e)
+    {
+        int keepPlaying = JOptionPane.showConfirmDialog(
+                this,
+                "Do you want to discard the current game and start a new one?",
+                "New Game?",
+                JOptionPane.YES_NO_OPTION);
+
+        if(keepPlaying == JOptionPane.YES_OPTION)
+        {
+            restartGame();
+        }
+    }
+
+    private void handleQuitButton(ActionEvent e)
+    {
+        int keepPlaying = JOptionPane.showConfirmDialog(
+                this,
+                "Would you like to quit game?",
+                "Quit game?",
+                JOptionPane.YES_NO_OPTION);
+
+        if(keepPlaying == JOptionPane.YES_OPTION)
+        {
+            dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
     }
 }
