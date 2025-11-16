@@ -2,7 +2,11 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.TreeMap;
 import java.util.Map;
 
@@ -18,6 +22,8 @@ public class TagExtractorFrame extends JFrame
 
     private JButton tagFileChooserButton;
     private JButton stopWordFileChooserButton;
+
+    private JButton saveButton;
 
     private JTextArea tagsDisplayTextArea;
 
@@ -65,8 +71,8 @@ public class TagExtractorFrame extends JFrame
         JPanel tagsDisplayPanel = initializeTagsDisplayPanel();
         mainPanel.add(tagsDisplayPanel, BorderLayout.CENTER);
 
-//        JPanel buttonsPanel = initializeButtonsPanel();
-//        mainPanel.add(buttonsPanel, BorderLayout.PAGE_END);
+        JPanel buttonsPanel = initializeButtonsPanel();
+        mainPanel.add(buttonsPanel, BorderLayout.PAGE_END);
 
         this.add(mainPanel);
     }
@@ -169,6 +175,8 @@ public class TagExtractorFrame extends JFrame
                 {
                     this.tagsDisplayTextArea.append(entry.getKey() + ": " + entry.getValue() + "\n");
                 }
+
+                this.saveButton.setEnabled(true);
             }
             catch (java.io.FileNotFoundException ex)
             {
@@ -194,5 +202,52 @@ public class TagExtractorFrame extends JFrame
         tagsDisplayPanel.add(tagDisplayScroller, BorderLayout.CENTER);
 
         return tagsDisplayPanel;
+    }
+
+    private JPanel initializeButtonsPanel()
+    {
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(1, 2));
+
+        this.saveButton = new JButton("Save tags to file");
+        this.saveButton.setEnabled(false);
+        this.saveButton.addActionListener(this::saveResultsToFile);
+        buttonsPanel.add(this.saveButton);
+
+        JButton quitButton = new JButton("Quit");
+        quitButton.addActionListener(this::quitButtonHandler);
+        buttonsPanel.add(quitButton);
+
+        return buttonsPanel;
+    }
+
+    private void saveResultsToFile(ActionEvent e)
+    {
+        JFileChooser saveFileChooser = new JFileChooser();
+
+        int fileSaveResult = saveFileChooser.showSaveDialog(this);
+        if(fileSaveResult == JFileChooser.APPROVE_OPTION)
+        {
+            try
+            {
+                Files.writeString(saveFileChooser.getSelectedFile().toPath(), this.tagsDisplayTextArea.getText());
+            } catch (IOException ex)
+            {
+                JOptionPane.showMessageDialog(this, "An error occurred while saving: " + ex.toString());
+            }
+        }
+    }
+
+    private void quitButtonHandler(ActionEvent e)
+    {
+        int quitConfirmation = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to quit?",
+                "Quit Confirmation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
+        );
+
+        if(quitConfirmation == JOptionPane.YES_OPTION) {dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));}
     }
 }
