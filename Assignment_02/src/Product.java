@@ -2,6 +2,10 @@ import java.util.Objects;
 
 public class Product
 {
+    public static final int randomAccessIdLength = 6;
+    public static final int randomAccessNameLength = 35;
+    public static final int randomAccessDescLength = 75;
+
     private final String id;
     private String name;
     private String description;
@@ -28,18 +32,64 @@ public class Product
      */
     public String getId()
     {
-        return id;
+        return id.trim();
+    }
+
+    /**
+     * Gets the ID tied to this product, always returns a fixed length for RandomAccess files
+     * @return - String ID, will always be Product.randomAccessIdLength characters long
+     */
+    public String getRandomAccessId()
+    {
+        int idLength = this.id.length();
+
+        if(idLength > Product.randomAccessIdLength)
+        {
+            return this.id.substring(0, Product.randomAccessIdLength);
+        }
+        else if(idLength == Product.randomAccessIdLength)
+        {
+            return this.id;
+        }
+        else//if(idLength < Product.randomAccessIdLength)
+        {
+            int paddingSpaces = Product.randomAccessIdLength - idLength;
+            return this.id + " ".repeat(paddingSpaces);
+        }
     }
 
     // No ID setter (ID should not change once set)
 
     /**
      * Gets the name of this product
-     * @return - String
+     * @return - String name
      */
     public String getName()
     {
-        return name;
+        return name.trim();
+    }
+
+    /**
+     * Gets the name of this product, always returns a fixed length for RandomAccess files
+     * @return - String name, will always be Product.randomAccessNameLength characters long
+     */
+    public String getRandomAccessName()
+    {
+        int nameLength = this.name.length();
+
+        if(nameLength > Product.randomAccessNameLength)
+        {
+            return this.name.substring(0, Product.randomAccessNameLength);
+        }
+        else if(nameLength == Product.randomAccessNameLength)
+        {
+            return this.name;
+        }
+        else//if(nameLength < this.randomAccessNameLength)
+        {
+            int paddingSpaces = Product.randomAccessNameLength - nameLength;
+            return this.name + " ".repeat(paddingSpaces);
+        }
     }
 
     /**
@@ -53,11 +103,34 @@ public class Product
 
     /**
      * Gets the description of this product
-     * @return - String
+     * @return - String description
      */
     public String getDescription()
     {
-        return description;
+        return description.trim();
+    }
+
+    /**
+     * Gets the description of this product, always returns a fixed length for RandomAccess files
+     * @return - String description, will always be Product.randomAccessDescLength characters long
+     */
+    public String getRandomAccessDescription()
+    {
+        int descLength = this.description.length();
+
+        if(descLength > Product.randomAccessDescLength)
+        {
+            return this.description.substring(0, Product.randomAccessDescLength);
+        }
+        else if(descLength == Product.randomAccessDescLength)
+        {
+            return this.description;
+        }
+        else//if(randomAccessDescLength < this.randomAccessDescLength)
+        {
+            int paddingSpaces = Product.randomAccessDescLength - descLength;
+            return this.description + " ".repeat(paddingSpaces);
+        }
     }
 
     /**
