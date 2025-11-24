@@ -1,5 +1,6 @@
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Product
@@ -178,6 +179,37 @@ public class Product
         randomAccessFile.write(this.getRandomAccessName().getBytes(StandardCharsets.UTF_8));
         randomAccessFile.write(this.getRandomAccessDescription().getBytes(StandardCharsets.UTF_8));
         randomAccessFile.writeDouble(this.getCost());
+    }
+
+    public static ArrayList<Product> retrieveRandomAccessProducts(RandomAccessFile randomAccessFile) throws java.io.IOException
+    {
+        ArrayList<Product> discoveredProducts = new ArrayList<Product>();
+
+        long fileLength = randomAccessFile.length();
+        long numberOfProducts = fileLength / randomAccessRecordLength;
+
+        for(int prodNum = 0; prodNum < numberOfProducts; prodNum++)
+        {
+            randomAccessFile.seek(prodNum * randomAccessRecordLength);
+
+            byte[] idBytes = new byte[randomAccessIdLength];
+            randomAccessFile.readFully(idBytes);
+            String prodId = new String(idBytes, StandardCharsets.UTF_8).trim();
+
+            byte[] nameBytes = new byte[randomAccessNameLength];
+            randomAccessFile.readFully(nameBytes);
+            String prodName = new String(nameBytes, StandardCharsets.UTF_8).trim();
+
+            byte[] descBytes = new byte[randomAccessDescLength];
+            randomAccessFile.readFully(descBytes);
+            String prodDesc = new String(descBytes, StandardCharsets.UTF_8).trim();
+
+            Double prodCost = randomAccessFile.readDouble();
+
+            discoveredProducts.add(new Product(prodId, prodName, prodDesc, prodCost));
+        }
+
+        return discoveredProducts;
     }
 
     /**
