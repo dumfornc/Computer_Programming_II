@@ -1,3 +1,5 @@
+import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class Product
@@ -5,6 +7,8 @@ public class Product
     public static final int randomAccessIdLength = 6;
     public static final int randomAccessNameLength = 35;
     public static final int randomAccessDescLength = 75;
+
+    public static final int randomAccessRecordLength = randomAccessIdLength + randomAccessNameLength + randomAccessDescLength + 8;
 
     private final String id;
     private String name;
@@ -158,6 +162,22 @@ public class Product
     public void setCost(double cost)
     {
         this.cost = cost;
+    }
+
+    /**
+     * Writes the value of this product object to a random access file
+     * @param randomAccessFile - The file to write to
+     * @param recordNumber - The entry number in the file, this assumes that all entries are products and uses
+     *                       the length of a product entry to determine where in the file to start
+     */
+    public void saveToRandAccessFile(RandomAccessFile randomAccessFile, int recordNumber) throws java.io.IOException
+    {
+        randomAccessFile.seek(recordNumber * randomAccessRecordLength);
+
+        randomAccessFile.write(this.getRandomAccessId().getBytes(StandardCharsets.UTF_8));
+        randomAccessFile.write(this.getRandomAccessName().getBytes(StandardCharsets.UTF_8));
+        randomAccessFile.write(this.getRandomAccessDescription().getBytes(StandardCharsets.UTF_8));
+        randomAccessFile.writeDouble(this.getCost());
     }
 
     /**
