@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class RandProductMakerFrame extends JFrame
 {
     private static final File workingDirectory = new File(System.getProperty("user.dir"));
-    private static final String RAND_ACCESS_FILE_PATH = workingDirectory.getPath() + "\\src\\RandAccessProductData.rand";
+    public static final String RAND_ACCESS_FILE_PATH = workingDirectory.getPath() + "\\src\\RandAccessProductData.rand";
 
     private JTextArea productsPreviewTextArea;
 
