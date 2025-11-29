@@ -45,9 +45,14 @@ public class SortedList
                 lexicographicalOrdering = newItem.compareTo(halfwayValue);
 
                 // If we are down to the two indexes that new item is between
-                if(highIndex == halfwayIndex || lowIndex == halfwayIndex)
+                if(highIndex == halfwayIndex)
                 {
                     this.sortedList.add(halfwayIndex, newItem);
+                    itemNotPlaced = false;
+                }
+                else if(lowIndex == halfwayIndex)
+                {
+                    this.sortedList.add(halfwayIndex + 1, newItem);
                     itemNotPlaced = false;
                 }
                 // New item comes before halfway value
