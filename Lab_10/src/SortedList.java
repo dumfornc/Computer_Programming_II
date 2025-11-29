@@ -52,26 +52,24 @@ public class SortedList
 
                 lexicographicalOrdering = item.compareTo(halfwayValue);
 
-                // If we are down to the two indexes that new item is between
-                if(highIndex == halfwayIndex)
-                {
-                    theoreticalIndex = halfwayIndex;
-                    itemNotPlaced = false;
-                }
-                else if(lowIndex == halfwayIndex)
-                {
-                    theoreticalIndex = halfwayIndex + 1;
-                    itemNotPlaced = false;
-                }
                 // New item comes before halfway value
-                else if(lexicographicalOrdering < 0)
+                if(lexicographicalOrdering < 0)
                 {
                     highIndex = halfwayIndex;
                 }
                 // New item comes after halfway value
                 else if(lexicographicalOrdering > 0)
                 {
-                    lowIndex = halfwayIndex;
+                    // This prevents an infinite loop when the program locates two indexes the new value should be between
+                    if(lowIndex == halfwayIndex)
+                    {
+                        theoreticalIndex = halfwayIndex + 1;
+                        itemNotPlaced = false;
+                    }
+                    else
+                    {
+                        lowIndex = halfwayIndex;
+                    }
                 }
                 // New item is equal to halfway value
                 else//if(lexicographicalOrdering == 0)
