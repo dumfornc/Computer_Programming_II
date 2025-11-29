@@ -21,6 +21,14 @@ public class SortedList
 
     public void add(String newItem)
     {
+        this.sortedList.add(binarySearchToPlaceString(newItem), newItem);
+    }
+
+    public Integer binarySearchToPlaceString(String item)
+    {
+        // The index that the item should be at if it is inserted into the list
+        Integer theoreticalIndex = null;
+
         int highIndex = this.sortedList.size();
         int lowIndex = 0;
 
@@ -34,7 +42,7 @@ public class SortedList
         {
             if(highIndex == lowIndex)
             {
-                this.sortedList.add(highIndex, newItem);
+                theoreticalIndex = highIndex;
                 itemNotPlaced = false;
             }
             else
@@ -42,17 +50,17 @@ public class SortedList
                 halfwayIndex = (highIndex + lowIndex) / 2;
                 halfwayValue = this.sortedList.get(halfwayIndex);
 
-                lexicographicalOrdering = newItem.compareTo(halfwayValue);
+                lexicographicalOrdering = item.compareTo(halfwayValue);
 
                 // If we are down to the two indexes that new item is between
                 if(highIndex == halfwayIndex)
                 {
-                    this.sortedList.add(halfwayIndex, newItem);
+                    theoreticalIndex = halfwayIndex;
                     itemNotPlaced = false;
                 }
                 else if(lowIndex == halfwayIndex)
                 {
-                    this.sortedList.add(halfwayIndex + 1, newItem);
+                    theoreticalIndex = halfwayIndex + 1;
                     itemNotPlaced = false;
                 }
                 // New item comes before halfway value
@@ -68,11 +76,13 @@ public class SortedList
                 // New item is equal to halfway value
                 else//if(lexicographicalOrdering == 0)
                 {
-                    this.sortedList.add(halfwayIndex, newItem);
+                    theoreticalIndex = halfwayIndex;
                     itemNotPlaced = false;
                 }
             }
         }
+
+        return theoreticalIndex;
     }
 
     public String getIndex(int i)
