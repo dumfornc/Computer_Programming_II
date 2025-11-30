@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
@@ -7,7 +8,7 @@ public class SortedListMakerFrame extends JFrame
 {
     private final SortedList sortedList = new SortedList();
 
-    private final JTextArea listDisplayTextArea = new JTextArea();
+    private final JTextPane listDisplayTextPane = new JTextPane();
 
     private final JTextField addItemInput = new JTextField();
     private final JTextField searchItemsInput = new JTextField();
@@ -83,7 +84,7 @@ public class SortedListMakerFrame extends JFrame
         JPanel addingItemsInputPanel = new JPanel();
         addingItemsInputPanel.setLayout(new GridLayout(1, 2));
 
-        JLabel addingItemsLabel = new JLabel("Enter a string to add to a sorted list");
+        JLabel addingItemsLabel = new JLabel("Enter a string to add to a sorted list:");
         addingItemsInputPanel.add(addingItemsLabel);
 
         addingItemsInputPanel.add(this.addItemInput);
@@ -100,28 +101,49 @@ public class SortedListMakerFrame extends JFrame
 
             this.sortedList.add(addedItem);
 
-            StringBuilder addedItemMessage = new StringBuilder("Item '%s' added to list:\n[".formatted(addedItem));
+            StyledDocument doc = listDisplayTextPane.getStyledDocument();
 
-            for(String item : this.sortedList.getSortedList())
+            SimpleAttributeSet attentionGrabbing = new SimpleAttributeSet();
+            StyleConstants.setBold(attentionGrabbing, true);
+            StyleConstants.setForeground(attentionGrabbing, Color.RED);
+
+            SimpleAttributeSet normal = new SimpleAttributeSet();
+
+            try
             {
-                addedItemMessage.append(item).append(", ");
+                doc.insertString(doc.getLength(), "Item '" + addedItem + "' added to list:\n[", normal);
+
+                for (String item : sortedList.getSortedList())
+                {
+                    if(item.equalsIgnoreCase(addedItem))
+                    {
+                        doc.insertString(doc.getLength(), item, attentionGrabbing);
+                    }
+                    else
+                    {
+                        doc.insertString(doc.getLength(), item, normal);
+                    }
+                    doc.insertString(doc.getLength(), ", ", normal);
+                }
+
+                // remove trailing ", "
+                doc.remove(doc.getLength() - 2, 2);
+                doc.insertString(doc.getLength(), "]\n\n", normal);
             }
-
-            // Removes last ", "
-            addedItemMessage = new StringBuilder(addedItemMessage.substring(0, addedItemMessage.length() - 2));
-            addedItemMessage.append("]\n\n");
-
-            this.listDisplayTextArea.append(addedItemMessage.toString());
+            catch(BadLocationException _)
+            {
+                // This shouldn't be an issue since all the inserts are based on the length of the document
+            }
         }
     }
 
     private JScrollPane initializeResultsScrollArea()
     {
-        this.listDisplayTextArea.setEditable(false);
+        this.listDisplayTextPane.setEditable(false);
 
         return new JScrollPane
         (
-            this.listDisplayTextArea,
+            this.listDisplayTextPane,
             JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
             JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
         );
