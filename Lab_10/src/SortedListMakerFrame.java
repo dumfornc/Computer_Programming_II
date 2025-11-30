@@ -10,8 +10,14 @@ public class SortedListMakerFrame extends JFrame
 
     private final JTextPane listDisplayTextPane = new JTextPane();
 
+    private SimpleAttributeSet attentionGrabbing;
+    private SimpleAttributeSet normalText;
+
     private final JTextField addItemInput = new JTextField();
-    private final JTextField searchItemsInput = new JTextField();
+    private final JTextField searchItemInput = new JTextField();
+
+    // This is an instance variable so it can be disabled until there is something in the list
+    private JButton searchItemButton;
 
     public SortedListMakerFrame()
     {
@@ -29,7 +35,17 @@ public class SortedListMakerFrame extends JFrame
 
         setTitle("Sorted List Maker");
 
+        initializeTextAreaStyles();
         initializeUI();
+    }
+
+    private void initializeTextAreaStyles()
+    {
+        this.attentionGrabbing = new SimpleAttributeSet();
+        StyleConstants.setBold(this.attentionGrabbing, true);
+        StyleConstants.setForeground(this.attentionGrabbing, Color.RED);
+
+        this.normalText = new SimpleAttributeSet();
     }
 
     private void initializeUI()
@@ -58,8 +74,8 @@ public class SortedListMakerFrame extends JFrame
         JPanel addingItemsPanel = initializeAddingItemsPanel();
         controlsPanel.add(addingItemsPanel);
 
-//        JPanel searchingItemsPanel = initializeSearchingItemsPanel();
-//        controlsPanel.add(searchingItemsPanel);
+        JPanel searchingItemsPanel = initializeSearchingItemsPanel();
+        controlsPanel.add(searchingItemsPanel);
 
         return controlsPanel;
     }
@@ -97,38 +113,125 @@ public class SortedListMakerFrame extends JFrame
         String addedItem = this.addItemInput.getText();
         if(!addedItem.isBlank())
         {
+            // Now that there is an item the list can be searched
+            this.searchItemButton.setEnabled(true);
+
             this.addItemInput.setText("");
 
             this.sortedList.add(addedItem);
 
             StyledDocument doc = listDisplayTextPane.getStyledDocument();
 
-            SimpleAttributeSet attentionGrabbing = new SimpleAttributeSet();
-            StyleConstants.setBold(attentionGrabbing, true);
-            StyleConstants.setForeground(attentionGrabbing, Color.RED);
-
-            SimpleAttributeSet normal = new SimpleAttributeSet();
-
             try
             {
-                doc.insertString(doc.getLength(), "Item '" + addedItem + "' added to list:\n[", normal);
+                doc.insertString(doc.getLength(), "Item '" + addedItem + "' added to list:\n[", this.normalText);
 
-                for (String item : sortedList.getSortedList())
+                for(String item : sortedList.getSortedList())
                 {
                     if(item.equalsIgnoreCase(addedItem))
                     {
-                        doc.insertString(doc.getLength(), item, attentionGrabbing);
+                        doc.insertString(doc.getLength(), item, this.attentionGrabbing);
                     }
                     else
                     {
-                        doc.insertString(doc.getLength(), item, normal);
+                        doc.insertString(doc.getLength(), item, this.normalText);
                     }
-                    doc.insertString(doc.getLength(), ", ", normal);
+                    doc.insertString(doc.getLength(), ", ", this.normalText);
                 }
 
                 // remove trailing ", "
                 doc.remove(doc.getLength() - 2, 2);
-                doc.insertString(doc.getLength(), "]\n\n", normal);
+                doc.insertString(doc.getLength(), "]\n\n", this.normalText);
+            }
+            catch(BadLocationException _)
+            {
+                // This shouldn't be an issue since all the inserts are based on the length of the document
+            }
+        }
+    }
+
+    private JPanel initializeSearchingItemsPanel()
+    {
+        JPanel searchingItemsPanel = new JPanel();
+        searchingItemsPanel.setLayout(new BorderLayout());
+
+        JPanel searchingItemsInputPanel = initializeSearchingItemsInputPanel();
+        searchingItemsPanel.add(searchingItemsInputPanel, BorderLayout.CENTER);
+
+        this.searchItemButton = new JButton("Search for item");
+        this.searchItemButton.addActionListener(this::searchItemHandler);
+        this.searchItemButton.setEnabled(false);
+        this.searchItemButton.setToolTipText("Not available till at least one item has been added to the list");
+        searchingItemsPanel.add(this.searchItemButton, BorderLayout.PAGE_END);
+
+        return searchingItemsPanel;
+    }
+
+    private JPanel initializeSearchingItemsInputPanel()
+    {
+        JPanel searchingItemsInputPanel = new JPanel();
+        searchingItemsInputPanel.setLayout(new GridLayout(1, 2));
+
+        JLabel searchingItemsLabel = new JLabel("Enter a string to search for its placement:");
+        searchingItemsInputPanel.add(searchingItemsLabel);
+
+        searchingItemsInputPanel.add(this.searchItemInput);
+
+        return searchingItemsInputPanel;
+    }
+
+    private void searchItemHandler(ActionEvent e)
+    {
+        String searchedItem = this.searchItemInput.getText();
+        if(!searchedItem.isBlank())
+        {
+            this.searchItemInput.setText("");
+
+            int itemIndex = this.sortedList.binarySearchToPlaceString(searchedItem);
+            String currentItemAtIndex = this.sortedList.getIndex(itemIndex);
+
+            StyledDocument doc = listDisplayTextPane.getStyledDocument();
+
+            try {
+                // Item is already in the list
+                if(currentItemAtIndex.equals(searchedItem))
+                {
+                    doc.insertString(doc.getLength(), "Item '" + searchedItem + "' was in list at index " + itemIndex + ":\n[", this.normalText);
+
+                    for(String item : sortedList.getSortedList())
+                    {
+                        if(item.equalsIgnoreCase(searchedItem))
+                        {
+                            doc.insertString(doc.getLength(), item, this.attentionGrabbing);
+                        }
+                        else
+                        {
+                            doc.insertString(doc.getLength(), item, this.normalText);
+                        }
+                        doc.insertString(doc.getLength(), ", ", this.normalText);
+                    }
+                }
+                else
+                {
+                    String msgStart = "Item '" + searchedItem + "' was not in list, if it were added it would be at index  " + itemIndex + ":\n[";
+                    doc.insertString(doc.getLength(), msgStart, this.normalText);
+
+                    int i = 0;
+                    for(String item : sortedList.getSortedList())
+                    {
+                        if(i == itemIndex)
+                        {
+                            doc.insertString(doc.getLength(), "<Here>", this.attentionGrabbing);
+                            doc.insertString(doc.getLength(), ", ", this.normalText);
+                        }
+                        doc.insertString(doc.getLength(), item + ", ", this.normalText);
+                        i++;
+                    }
+                }
+
+                // remove trailing ", "
+                doc.remove(doc.getLength() - 2, 2);
+                doc.insertString(doc.getLength(), "]\n\n", this.normalText);
             }
             catch(BadLocationException _)
             {
